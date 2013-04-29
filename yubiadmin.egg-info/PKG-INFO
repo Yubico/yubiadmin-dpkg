@@ -1,0 +1,19 @@
+Metadata-Version: 1.1
+Name: yubiadmin
+Version: 0.0.1
+Summary: UNKNOWN
+Home-page: https://github.com/Yubico/yubiadmin
+Author: Yubico Open Source Maintainers
+Author-email: ossmaint@yubico.com
+License: BSD 2 clause
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: WSGI :: Application

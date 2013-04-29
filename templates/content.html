@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container">
+
+	<div class="row">
+		<div class="span12">
+			<h1>YubiADMIN</h1>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="span3">
+			<div class="well">
+				<ul class="nav nav-list">
+					<li class="nav-header">Modules</li>
+					{% for mod in modules %}
+					<li {% if module is defined and mod.name == module.name %}class="active"{% endif %} >
+						<a href="/{{ mod.name }}">{{ mod.title }}</a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		<div class="span9">
+			{% block content %}
+			{% endblock %}
+		</div>
+		</div>
+
+	<hr>
+
+	<footer>
+	<p>&copy; Yubico 2013</p>
+	</footer>
+
+</div> <!-- /container -->
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "content.html" %}
+
+{% block content %}
+<div class="navbar">
+	<div class="navbar-inner">
+		<ul class="nav">
+			{% for sect in module.sections %}
+			<li {% if sect.name == section.name %}class="active"{% endif %}>
+			<a href="/{{ module.name }}/{{ sect.name }}">{{ sect.title }}</a>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+
+{{ page }}
+{% endblock %}

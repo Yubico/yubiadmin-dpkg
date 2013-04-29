@@ -1,0 +1,90 @@
+2013-04-29  Dain Nilsson <dain@yubico.com>
+
+	* NEWS, maintainer-scripts/make-release.sh: Added release script.
+
+2013-04-29  Dain Nilsson <dain@yubico.com>
+
+	* static/404.html: Removed generated 404 page.
+
+2013-04-29  Dain Nilsson <dain@yubico.com>
+
+	* bin/yubiadmin-server, yubiadmin/config.py,
+	yubiadmin/default_settings.py: Added HTTP basic authorization.
+
+2013-04-29  Dain Nilsson <dain@yubico.com>
+
+	* bin/yubiadmin-server, setup.py, yubiadmin/admin.py,
+	yubiadmin/server.py: Moved running the server to yubiadmin-server.
+
+2013-04-26  Dain Nilsson <dain@yubico.com>
+
+	* templates/form.html: Error display.
+
+2013-04-26  Dain Nilsson <dain@yubico.com>
+
+	* static/css/main.css: Style improvements.
+
+2013-04-26  Dain Nilsson <dain@yubico.com>
+
+	* static/css/main.css, templates/form.html, yubiadmin/apps/val.py,
+	yubiadmin/util/form.py: Improved layout of forms.
+
+2013-04-26  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/val.py, yubiadmin/util/config.py,
+	yubiadmin/util/form.py: Better inserting of missing parameters.
+
+2013-04-26  Dain Nilsson <dain@yubico.com>
+
+	* .gitignore, COPYING, MANIFEST.in, setup.py: Improved dist.
+
+2013-04-26  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/admin.py, yubiadmin/apps/ksm.py, yubiadmin/apps/val.py,
+	yubiadmin/util.py, yubiadmin/util/__init__.py,
+	yubiadmin/util/app.py, yubiadmin/util/config.py,
+	yubiadmin/util/form.py: Re-structured code.
+
+2013-04-25  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/val.py, yubiadmin/util.py: Started work on adding
+	lists of items to forms.
+
+2013-04-25  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/ksm.py, yubiadmin/apps/val.py, yubiadmin/util.py: 
+	Added form for dbconfig-common files.
+
+2013-04-25  Dain Nilsson <dain@yubico.com>
+
+	* templates/form.html, templates/forms.html,
+	templates/ksm/database.html, templates/ksm/general.html,
+	templates/ksm/ksms.html, templates/val/database.html,
+	templates/val/general.html, templates/val/ksms.html,
+	templates/val/syncpool.html, yubiadmin/admin.py,
+	yubiadmin/apps/ksm.py, yubiadmin/apps/val.py, yubiadmin/util.py: 
+	Writing/reading config files.
+
+2013-04-24  Dain Nilsson <dain@yubico.com>
+
+	* static/css/main.css, templates/app_base.html,
+	templates/forms.html, templates/val/database.html,
+	yubiadmin/apps/val.py: Work on forms.
+
+2013-04-24  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/admin.py, yubiadmin/apps/ksm.py, yubiadmin/apps/val.py,
+	yubiadmin/static.py: Replaced cherrypy with webob.
+
+2013-04-24  Dain Nilsson <dain@yubico.com>
+
+	* templates/app_base.html, templates/base.html,
+	templates/content.html, templates/forms.html,
+	templates/val/general.html, templates/val/syncpool.html,
+	yubiadmin/admin.py, yubiadmin/apps/ksm.py, yubiadmin/apps/val.py: 
+	Introduced forms.
+
+2013-04-23  Dain Nilsson <dain@yubico.com>
+
+	* Initial import.
+
