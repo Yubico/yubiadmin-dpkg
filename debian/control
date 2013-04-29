@@ -5,7 +5,8 @@ Section: python
 Priority: optional
 Build-Depends: python-setuptools (>= 0.6b3),
                python-all (>= 2.6.6-3),
-               debhelper (>= 9)
+               debhelper (>= 9),
+               python-nose
 Standards-Version: 3.9.4
 Homepage: https://github.com/Yubico/yubidmin
 Vcs-Browser: https://github.com/Yubico/yubiadmin-dpkg
@@ -14,5 +15,7 @@ Vcs-Git: git://github.com/Yubico/yubiadmin-dpkg.git
 Package: python-yubiadmin
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends}
-Description: UNKNOWN
-
+Description: Web interface for configuring Yubico services
+ YubiAdmin provides a web based administration interface to several of Yubicos
+ services, allowing a user with proper credentials to change configuration in
+ an easy to use way, instead of having to manually edit configuration files.
