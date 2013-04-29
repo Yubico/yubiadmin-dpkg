@@ -2,6 +2,7 @@ COPYING
 ChangeLog
 MANIFEST.in
 NEWS
+setup.cfg
 setup.py
 bin/yubiadmin-server
 static/favicon.ico

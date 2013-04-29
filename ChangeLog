@@ -1,5 +1,13 @@
 2013-04-29  Dain Nilsson <dain@yubico.com>
 
+	* NEWS, setup.py: Changed version.
+
+2013-04-29  Dain Nilsson <dain@yubico.com>
+
+	* setup.cfg: Added setup.cfg
+
+2013-04-29  Dain Nilsson <dain@yubico.com>
+
 	* NEWS, maintainer-scripts/make-release.sh: Added release script.
 
 2013-04-29  Dain Nilsson <dain@yubico.com>
