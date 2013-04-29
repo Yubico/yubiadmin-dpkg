@@ -1,0 +1,18 @@
+Source: yubiadmin
+Maintainer: Yubico Open Source Maintainers <ossmaint@yubico.com>
+Uploaders: Simon Josefsson <simon@yubico.com>, Klas Lindfors <klas@yubico.com>, Dain Nilsson <dain@yubico.com>
+Section: python
+Priority: optional
+Build-Depends: python-setuptools (>= 0.6b3),
+               python-all (>= 2.6.6-3),
+               debhelper (>= 9)
+Standards-Version: 3.9.4
+Homepage: https://github.com/Yubico/yubidmin
+Vcs-Browser: https://github.com/Yubico/yubiadmin-dpkg
+Vcs-Git: git://github.com/Yubico/yubiadmin-dpkg.git
+
+Package: python-yubiadmin
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}
+Description: UNKNOWN
+
