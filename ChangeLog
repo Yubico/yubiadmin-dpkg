@@ -1,5 +1,28 @@
 2013-04-30  Dain Nilsson <dain@yubico.com>
 
+	* NEWS, setup.py: Updated version for release.
+
+2013-04-30  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/val.py, yubiadmin/server.py,
+	yubiadmin/static/css/main.css, yubiadmin/templates/app_base.html,
+	yubiadmin/util/config.py, yubiadmin/util/form.py: Added advanced tab
+	for editing complete configuration file.
+
+2013-04-30  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/val.py,
+	yubiadmin/templates/val/synchronization.html,
+	yubiadmin/templates/val/syncpool.html: Better val layout.
+
+2013-04-30  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/val.py, yubiadmin/static.py,
+	yubiadmin/templates/val/syncpool.html, yubiadmin/util/config.py,
+	yubiadmin/util/form.py: Added support for KSM urls.
+
+2013-04-30  Dain Nilsson <dain@yubico.com>
+
 	* NEWS, setup.py, yubiadmin/__init__.py,
 	yubiadmin/apps/__init__.py, yubiadmin/apps/ksm.py,
 	yubiadmin/apps/val.py, yubiadmin/config.py, yubiadmin/server.py,

@@ -27,14 +27,15 @@
 
 from wtforms import Form
 from wtforms.fields import (
-    TextField, IntegerField, PasswordField, HiddenField, Field)
+    TextField, IntegerField, PasswordField, TextAreaField, HiddenField, Field)
 from wtforms.widgets import PasswordInput, TextArea
 from wtforms.validators import Optional, NumberRange
-from yubiadmin.util.config import ValueHandler, FileConfig, php_inserter
+from yubiadmin.util.config import RegexHandler, FileConfig, php_inserter
 
 __all__ = [
     'ListField',
     'ConfigForm',
+    'FileForm',
     'DBConfigForm'
 ]
 
@@ -87,6 +88,28 @@ class ConfigForm(Form):
         self.config.commit()
 
 
+class FileForm(ConfigForm):
+    """
+    Form that displays the entire content of a file.
+    """
+    content = TextAreaField('File')
+    attrs = {'content': {'class': 'span9 code', 'rows': 25}}
+
+    class Handler(object):
+        def read(self, content):
+            return content
+
+        def write(self, content, value):
+            return value
+
+    def __init__(self, filename, legend=None, description=None, *args,
+                 **kwargs):
+        self.config = FileConfig(filename, [('content', self.Handler())])
+        self.legend = legend
+        self.description = description
+        super(FileForm, self).__init__(*args, **kwargs)
+
+
 class DBConfigForm(ConfigForm):
     """
     Complete form for editing a dbconfig-common generated for PHP.
@@ -104,7 +127,7 @@ class DBConfigForm(ConfigForm):
     def db_handler(self, varname, default):
         pattern = r'\$%s=\'(.*)\';' % varname
         writer = lambda x: '$%s=\'%s\';' % (varname, x)
-        return ValueHandler(pattern, writer, inserter=php_inserter,
+        return RegexHandler(pattern, writer, inserter=php_inserter,
                             default=default)
 
     def __init__(self, filename, *args, **kwargs):

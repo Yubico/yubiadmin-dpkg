@@ -37,7 +37,7 @@ yubiadmin/templates/base.html
 yubiadmin/templates/content.html
 yubiadmin/templates/form.html
 yubiadmin/templates/index.html
-yubiadmin/templates/val/syncpool.html
+yubiadmin/templates/val/synchronization.html
 yubiadmin/util/__init__.py
 yubiadmin/util/app.py
 yubiadmin/util/config.py
