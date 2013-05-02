@@ -1,5 +1,58 @@
 2013-05-02  Dain Nilsson <dain@yubico.com>
 
+	* NEWS: Updated NEWS for release.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/val.py, yubiadmin/templates/content.html,
+	yubiadmin/templates/form.html, yubiadmin/util/app.py,
+	yubiadmin/util/config.py: Improved error handling.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* .travis.yml: Attempt to reintroduce python3
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/util/config.py: Use MutableMapping instead of DictMixin.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* .travis.yml, yubiadmin/util/config.py: Don't build for python3, we
+	don't support it.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/util/config.py: Remove unicode literal to work under
+	python3.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/util/app.py, yubiadmin/util/config.py: Use logging
+	instead of print.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* .travis.yml, yubiadmin/apps/val.py: We don't support python 2.6
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* NEWS, setup.py: Bumped version post release.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* .travis.yml: Added Travis CI
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* release.py: Fix publishing.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* release.py: Fixed publishing.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
 	* release.py: Better logging.
 
 2013-05-02  Dain Nilsson <dain@yubico.com>
