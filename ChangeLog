@@ -1,3 +1,68 @@
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* release.py: Better logging.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* release.py: Formatting.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* release.py: Added optional uploading to PyPI.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* release.py: Better release publishing.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* release.py: Handle tests.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* MANIFEST.in: Added release.py to MANIFEST.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* maintainer-scripts/make-release.sh: Removed maintainer-scripts.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* release.py: Better publishing.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* release.py: Added publishing.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* release.py: Cleaned up release.py
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* release.py, setup.py: Moved release into own file.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* setup.py: Missing comma.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* setup.py: Fix skip-tests option.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* NEWS, setup.py: Bumped version.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* setup.py: Added release command.
+
+2013-04-30  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/val.py, yubiadmin/server.py: Handle invalid URLs
+	better.
+
 2013-04-30  Dain Nilsson <dain@yubico.com>
 
 	* NEWS, setup.py: Updated version for release.
