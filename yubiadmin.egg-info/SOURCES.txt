@@ -3,6 +3,7 @@ ChangeLog
 MANIFEST.in
 NEWS
 README
+release.py
 setup.cfg
 setup.py
 bin/yubiadmin-server

@@ -28,10 +28,11 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 from setuptools import setup
+from release import release
 
 setup(
     name='yubiadmin',
-    version='0.0.5',
+    version='0.0.6',
     author='Dain Nilsson',
     author_email='dain@yubico.com',
     maintainer='Yubico Open Source Maintainers',
@@ -45,6 +46,7 @@ setup(
     install_requires=['webob', 'Jinja2', 'WTForms'],
     test_suite='nose.collector',
     tests_require=[''],
+    cmdclass={'release': release},
     classifiers=[
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
