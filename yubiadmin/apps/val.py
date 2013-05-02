@@ -94,12 +94,11 @@ class KSMHandler(object):
 
     def read(self, content):
         block = self._get_block(content)
-        print block
         if block:
             quoted = QUOTED_STRS.findall(strip_comments(block))
             return [strip_quotes(x) for x in quoted]
         else:
-            []
+            return []
 
     def write(self, content, value):
         block = self._get_block(content)

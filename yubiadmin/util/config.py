@@ -27,7 +27,9 @@
 
 import os
 import re
-from UserDict import DictMixin
+import errno
+import logging as log
+from collections import MutableMapping, OrderedDict
 
 __all__ = [
     'RegexHandler',
@@ -111,14 +113,14 @@ class RegexHandler(object):
             return self.inserter(content, self.writer(value))
 
 
-class FileConfig(DictMixin, object):
+class FileConfig(MutableMapping):
     """
     Maps key-value pairs to a backing config file.
     You can manually edit the file by modifying self.content.
     """
     def __init__(self, filename, params=[]):
         self.filename = filename
-        self.params = {}
+        self.params = OrderedDict()
         for param in params:
             self.add_param(*param)
 
@@ -127,16 +129,32 @@ class FileConfig(DictMixin, object):
             with open(self.filename, 'r') as file:
                 self.content = unicode(file.read())
         except IOError as e:
-            print e
+            log.error(e)
             self.content = u''
+            #Initialize all params from default values.
+            for key in self.params:
+                self[key] = self[key]
 
     def commit(self):
+        if not os.path.isfile(self.filename):
+            dir = os.path.dirname(self.filename)
+            try:
+                os.makedirs(dir)
+            except OSError as e:
+                if e.errno != errno.EEXIST:
+                    raise e
         with open(self.filename, 'w+') as file:
             #Fix all linebreaks
             file.write(os.linesep.join(self.content.splitlines()))
 
     def add_param(self, key, handler):
         self.params[key] = handler
+
+    def __iter__(self):
+        return self.params.__iter__()
+
+    def __len__(self):
+        return len(self.params)
 
     def __getitem__(self, key):
         return self.params[key].read(self.content)
