@@ -6,7 +6,8 @@ README
 release.py
 setup.cfg
 setup.py
-bin/yubiadmin-server
+bin/yubiadmin
+bin/yubiadmin.1
 yubiadmin/__init__.py
 yubiadmin/config.py
 yubiadmin/default_settings.py
@@ -18,6 +19,7 @@ yubiadmin.egg-info/dependency_links.txt
 yubiadmin.egg-info/requires.txt
 yubiadmin.egg-info/top_level.txt
 yubiadmin/apps/__init__.py
+yubiadmin/apps/admin.py
 yubiadmin/apps/ksm.py
 yubiadmin/apps/val.py
 yubiadmin/static/favicon.ico
@@ -38,8 +40,10 @@ yubiadmin/templates/base.html
 yubiadmin/templates/content.html
 yubiadmin/templates/form.html
 yubiadmin/templates/index.html
+yubiadmin/templates/admin/general.html
 yubiadmin/templates/val/synchronization.html
 yubiadmin/util/__init__.py
 yubiadmin/util/app.py
 yubiadmin/util/config.py
 yubiadmin/util/form.py
+yubiadmin/util/system.py
