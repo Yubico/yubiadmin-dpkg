@@ -10,7 +10,7 @@ override_dh_auto_build:
 
 
 override_dh_installinit:
-	dh_installinit --name yubiadmin-server
+	dh_installinit --name yubiadmin
 
 %:
 	dh $@ --with python2 --buildsystem=python_distutils
