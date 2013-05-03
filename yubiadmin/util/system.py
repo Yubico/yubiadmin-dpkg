@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 # Copyright (c) 2013 Yubico AB
 # All rights reserved.
 #
@@ -27,35 +25,21 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-from setuptools import setup
-from release import release
+import subprocess
 
-setup(
-    name='yubiadmin',
-    version='0.0.8',
-    author='Dain Nilsson',
-    author_email='dain@yubico.com',
-    maintainer='Yubico Open Source Maintainers',
-    maintainer_email='ossmaint@yubico.com',
-    url='https://github.com/Yubico/yubiadmin',
-    license='BSD 2 clause',
-    packages=['yubiadmin', 'yubiadmin.apps', 'yubiadmin.util'],
-    include_package_data=True,
-    scripts=['bin/yubiadmin'],
-    setup_requires=['nose>=1.0'],
-    install_requires=['webob', 'Jinja2', 'WTForms'],
-    test_suite='nose.collector',
-    tests_require=[''],
-    cmdclass={'release': release},
-    classifiers=[
-        'License :: OSI Approved :: BSD License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Development Status :: 2 - Pre-Alpha',
-        'Environment :: Web Environment',
-        'Intended Audience :: Developers',
-        'Intended Audience :: System Administrators',
-        'Topic :: Internet :: WWW/HTTP',
-        'Topic :: Internet :: WWW/HTTP :: WSGI :: Application',
-    ]
-)
+__all__ = [
+    'run',
+    'invoke_rc_d'
+]
+
+
+def run(cmd):
+    p = subprocess.Popen(['sh', '-c', cmd], stdout=subprocess.PIPE)
+    return p.wait(), p.stdout.read()
+
+
+def invoke_rc_d(script, cmd):
+    if run('which invoke-rd.d')[0] == 0:
+        return run('invoke-rc.d %s %s' % (script, cmd))
+    else:
+        return run('/etc/init.d/%s %s' % (script, cmd))

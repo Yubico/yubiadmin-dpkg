@@ -1,3 +1,55 @@
+2013-05-03  Dain Nilsson <dain@yubico.com>
+
+	* release.py: Better publishing.
+
+2013-05-03  Dain Nilsson <dain@yubico.com>
+
+	* NEWS: Updated NEWS for release.
+
+2013-05-03  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/templates/admin/general.html: Improve warning for
+	restarting the server.
+
+2013-05-03  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/admin.py, yubiadmin/templates/admin/general.html,
+	yubiadmin/util/system.py: Added yubiadmin app.
+
+2013-05-03  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/__init__.py, yubiadmin/apps/val.py,
+	yubiadmin/config.py, yubiadmin/server.py,
+	yubiadmin/static/css/main.css, yubiadmin/templates/content.html,
+	yubiadmin/util/app.py, yubiadmin/util/config.py: Added priority and
+	disable to apps.
+
+2013-05-03  Dain Nilsson <dain@yubico.com>
+
+	* bin/yubiadmin, bin/yubiadmin.1: Nitpicking.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* bin/yubiadmin, bin/yubiadmin.1: Add command line arguments to
+	yubiadmin script.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* MANIFEST.in: Added man pages to MANIFEST.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* NEWS, setup.py: Incremented version number post release.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* bin/yubiadmin.1: Added man page for yubiadmin.
+
+2013-05-02  Dain Nilsson <dain@yubico.com>
+
+	* bin/yubiadmin, bin/yubiadmin-server, setup.py: Renamed
+	yubiadmin-server to yubiadmin.
+
 2013-05-02  Dain Nilsson <dain@yubico.com>
 
 	* NEWS: Updated NEWS for release.
