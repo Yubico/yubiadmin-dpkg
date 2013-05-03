@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ### BEGIN INIT INFO
-# Provides:          yubiadmin-server
+# Provides:          yubiadmin
 # Required-Start:    $local_fs $remote_fs $network
 # Required-Stop:     $local_fs $remote_fs $network
 # Default-Start:     2 3 4 5
@@ -17,8 +17,8 @@
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="yubiadmin web server"
-NAME=yubiadmin-server
-DAEMON=/usr/bin/yubiadmin-server
+NAME=yubiadmin
+DAEMON=/usr/bin/yubiadmin
 DAEMON_ARGS=""
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
