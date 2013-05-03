@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+#Fix permissions
+chmod 0600 /etc/yubico/admin/yubiadmin.conf
+
+
+#DEBHELPER#
+
+exit 0
