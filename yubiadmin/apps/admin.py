@@ -25,25 +25,18 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+from threading import Timer
 from wtforms.fields import IntegerField, TextField, PasswordField
 from wtforms.widgets import PasswordInput
 from wtforms.validators import NumberRange, IPAddress
 from yubiadmin.util.app import App
-from yubiadmin.util.config import RegexHandler, FileConfig, parse_value
+from yubiadmin.util.config import python_handler, FileConfig
 from yubiadmin.util.form import ConfigForm
 from yubiadmin.util.system import invoke_rc_d
 
 __all__ = [
     'app'
 ]
-
-
-def python_handler(varname, default):
-    pattern = r'(?sm)^\s*%s\s*=\s*(.*?)\s*$' % varname
-    reader = lambda match: parse_value(match.group(1))
-    writer = lambda x: '%s = %r' % (varname, str(x) if isinstance(x, unicode)
-                                    else x)
-    return RegexHandler(pattern, writer, reader, default=default)
 
 
 admin_config = FileConfig(
@@ -96,7 +89,8 @@ class YubiAdmin(App):
                                  template='admin/general')
 
     def restart(self, request):
-        invoke_rc_d('yubiadmin', 'restart')
+        timer = Timer(1, invoke_rc_d, args=('yubiadmin', 'restart'))
+        timer.start()
         return self.redirect('/%s/general' % self.name)
 
 

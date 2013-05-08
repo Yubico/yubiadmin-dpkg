@@ -1,3 +1,46 @@
+2013-05-08  Dain Nilsson <dain@yubico.com>
+
+	* NEWS: Updated NEWS for release.
+
+2013-05-08  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/admin.py, yubiadmin/templates/admin/general.html,
+	yubiadmin/templates/base.html: Better restart of admin server.
+
+2013-05-08  Dain Nilsson <dain@yubico.com>
+
+	* NEWS: Updated NEWS.
+
+2013-05-08  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/auth.py, yubiadmin/apps/ksm.py,
+	yubiadmin/apps/val.py: Added disable to apps.
+
+2013-05-08  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/auth.py, yubiadmin/apps/val.py: Added db settings
+	to auth.
+
+2013-05-08  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/auth.py, yubiadmin/apps/val.py,
+	yubiadmin/util/config.py: Added validation servers to auth.
+
+2013-05-07  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/auth.py: Added YubiHSM settings to auth.
+
+2013-05-07  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/admin.py, yubiadmin/apps/auth.py,
+	yubiadmin/apps/val.py, yubiadmin/static/css/main.css,
+	yubiadmin/templates/form.html, yubiadmin/util/config.py: Added
+	YubiAuth app.
+
+2013-05-03  Dain Nilsson <dain@yubico.com>
+
+	* NEWS, setup.py: Bumped versions post release.
+
 2013-05-03  Dain Nilsson <dain@yubico.com>
 
 	* release.py: Better publishing.

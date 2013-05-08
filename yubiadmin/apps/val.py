@@ -26,6 +26,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 import re
+import os
 from wtforms.fields import IntegerField
 from wtforms.validators import NumberRange, IPAddress, URL
 from yubiadmin.util.app import App
@@ -37,6 +38,9 @@ from yubiadmin.util.system import invoke_rc_d
 __all__ = [
     'app'
 ]
+
+
+YKVAL_CONFIG_FILE = '/etc/yubico/val/ykval-config.php'
 
 
 def yk_pattern(varname, prefix='', suffix='', flags=None):
@@ -94,7 +98,7 @@ class KSMHandler(object):
         block = self._get_block(content)
         value = ('function otp2ksmurls($otp, $client) {\n' +
                  '\treturn array (\n' +
-                 '\m'.join(['\t\t"%s",' % x for x in value]) +
+                 '\n'.join(['\t\t"%s",' % x for x in value]) +
                  '\n\t);\n}')
         if block:
             match = self.FUNCTION.search(content)
@@ -110,7 +114,7 @@ def is_daemon_running():
 
 
 ykval_config = FileConfig(
-    '/etc/yubico/val/ykval-config.php',
+    YKVAL_CONFIG_FILE,
     [
         ('sync_default', yk_handler('SYNC_DEFAULT_LEVEL', 60)),
         ('sync_secure', yk_handler('SYNC_SECURE_LEVEL', 40)),
@@ -165,14 +169,14 @@ class SyncPoolForm(ConfigForm):
     sync_pool = ListField(
         'Sync Pool URLs', [URL()],
         description="""
-        List of URLs to other servers in the sync pool.<br />
+        List of URLs to other servers in the sync pool.
         Example: <code>http://example.com/wsapi/2.0/sync</code>
         """)
     allowed_sync_pool = ListField(
         'Allowed Sync IPs', [IPAddress()],
         description="""
         List of IP-addresses of other servers that are allowed to sync with
-        this server.<br />
+        this server.
         Example: <code>10.0.0.1</code>
         """)
 
@@ -190,9 +194,9 @@ class KSMForm(ConfigForm):
     ksm_urls = ListField(
         'KSM URLs', [URL()],
         description="""
-        List of URLs to KSMs.<br />
-        The URLs must be fully qualified, i.e., contain the OTP itself.<br />
-        Example: <code>http://example.com/wsapi/decrypt?otp=$otp</code><br />
+        List of URLs to KSMs.
+        The URLs must be fully qualified, i.e., contain the OTP itself.
+        Example: <code>http://example.com/wsapi/decrypt?otp=$otp</code>
         More advanced OTP to KSM mapping is possible by manually editing the
         configuration file.
         """)
@@ -207,6 +211,7 @@ class YubikeyVal(App):
 
     name = 'val'
     sections = ['general', 'database', 'synchronization', 'ksms', 'advanced']
+    disabled = not os.path.isfile(YKVAL_CONFIG_FILE)
 
     def general(self, request):
         """
@@ -252,7 +257,7 @@ class YubikeyVal(App):
         Advanced
         """
         return self.render_forms(request, [
-            FileForm('/etc/yubico/val/ykval-config.php', 'Configuration')
+            FileForm(YKVAL_CONFIG_FILE, 'Configuration')
         ])
 
     #Pulls the tab to the right:
