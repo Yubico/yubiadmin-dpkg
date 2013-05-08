@@ -20,6 +20,7 @@ yubiadmin.egg-info/requires.txt
 yubiadmin.egg-info/top_level.txt
 yubiadmin/apps/__init__.py
 yubiadmin/apps/admin.py
+yubiadmin/apps/auth.py
 yubiadmin/apps/ksm.py
 yubiadmin/apps/val.py
 yubiadmin/static/favicon.ico
