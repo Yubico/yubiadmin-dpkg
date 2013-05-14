@@ -1,3 +1,30 @@
+2013-05-14  Dain Nilsson <dain@yubico.com>
+
+	* NEWS, setup.py: Updated NEWS and version for release.
+
+2013-05-14  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/auth.py, yubiadmin/templates/auth/list.html,
+	yubiadmin/templates/auth/user.html, yubiadmin/util/app.py: Added
+	assign/unassign Yubikey to auth.
+
+2013-05-13  Dain Nilsson <dain@yubico.com>
+
+	* NEWS, setup.py: Bumped version
+
+2013-05-13  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/auth.py, yubiadmin/static/css/main.css,
+	yubiadmin/static/js/auth.js, yubiadmin/templates/auth/delete.html,
+	yubiadmin/templates/auth/list.html, yubiadmin/templates/base.html,
+	yubiadmin/util/app.py: Added create/delete users.
+
+2013-05-13  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/auth.py, yubiadmin/static/css/main.css,
+	yubiadmin/templates/auth/list.html: Started adding user management
+	for YubiAuth.
+
 2013-05-08  Dain Nilsson <dain@yubico.com>
 
 	* NEWS: Updated NEWS for release.

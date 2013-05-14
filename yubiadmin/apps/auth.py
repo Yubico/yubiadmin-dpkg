@@ -26,12 +26,21 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 import os
-from wtforms.fields import SelectField, TextField, BooleanField, IntegerField
-from wtforms.validators import NumberRange, URL
-from yubiadmin.util.app import App
+import re
+from wtforms import Form
+from wtforms.fields import (SelectField, TextField, BooleanField, IntegerField,
+                            PasswordField)
+from wtforms.widgets import PasswordInput
+from wtforms.validators import NumberRange, URL, EqualTo, Regexp, Optional
+from yubiadmin.util.app import App, render
 from yubiadmin.util.config import (python_handler, python_list_handler,
                                    FileConfig)
 from yubiadmin.util.form import ConfigForm, FileForm, ListField
+try:
+    from yubiauth import YubiAuth
+    from yubiauth.core.model import User
+except:
+    YubiAuth = None
 
 __all__ = [
     'app'
@@ -160,7 +169,7 @@ class ValidationServerForm(ConfigForm):
         """)
 
 
-class YubiAuth(App):
+class YubiAuthApp(App):
     """
     YubiAuth
 
@@ -170,6 +179,11 @@ class YubiAuth(App):
     name = 'auth'
     sections = ['general', 'database', 'validation', 'advanced']
     disabled = not os.path.isfile(AUTH_CONFIG_FILE)
+
+    def __init__(self):
+        if YubiAuth:
+            self._users = YubiAuthUsers()
+            self.sections.insert(3, 'users')
 
     def general(self, request):
         """
@@ -197,8 +211,163 @@ class YubiAuth(App):
             FileForm(AUTH_CONFIG_FILE, 'Configuration')
         ])
 
+    def users(self, request):
+        """
+        Manage Users
+        """
+        return self._users(request) if YubiAuth else ""
+
     # Pulls the tab to the right:
     advanced.advanced = True
 
 
-app = YubiAuth()
+class CreateUserForm(Form):
+    legend = 'Create new User'
+    username = TextField('Username')
+    password = PasswordField('Password',
+                             widget=PasswordInput(hide_value=False))
+    verify = PasswordField('Verify password',
+                           [EqualTo('password')],
+                           widget=PasswordInput(hide_value=False))
+
+    def __init__(self, auth, **kwargs):
+        super(CreateUserForm, self).__init__(**kwargs)
+        self.auth = auth
+
+    def load(self):
+        pass
+
+    def save(self):
+        self.auth.create_user(self.username.data, self.password.data)
+        self.auth.commit()
+        self.username.data = None
+        self.password.data = None
+        self.verify.data = None
+
+
+class SetPasswordForm(Form):
+    legend = 'Change Password'
+    password = PasswordField('New password',
+                             [Optional()],
+                             widget=PasswordInput(hide_value=False))
+    verify = PasswordField('Verify password',
+                           [EqualTo('password')],
+                           widget=PasswordInput(hide_value=False))
+
+    def __init__(self, user, auth, **kwargs):
+        super(SetPasswordForm, self).__init__(**kwargs)
+        self.user = user
+        self.auth = auth
+
+    def load(self):
+        pass
+
+    def save(self):
+        if self.password.data:
+            self.user.set_password(self.password.data)
+            self.auth.commit()
+            self.password.data = None
+            self.verify.data = None
+
+
+class AssignYubiKeyForm(Form):
+    legend = 'Assign YubiKey'
+    assign = TextField('Assign YubiKey',
+                       [Regexp(r'^[cbdefghijklnrtuv]{1,64}$'),
+                           Optional()])
+
+    def __init__(self, user, auth, **kwargs):
+        super(AssignYubiKeyForm, self).__init__(**kwargs)
+        self.user = user
+        self.auth = auth
+
+    def load(self):
+        pass
+
+    def save(self):
+        if self.assign.data:
+            self.user.assign_yubikey(self.assign.data)
+            self.assign.data = None
+            self.auth.commit()
+
+
+class YubiAuthUsers(App):
+    user_range = re.compile('(\d+)-(\d+)')
+
+    def __init__(self):
+        self.auth = YubiAuth()
+
+    def __call__(self, request):
+        sub_cmd = request.path_info_pop()
+        if sub_cmd == 'create':
+            return self.create(request)
+        elif sub_cmd == 'delete':
+            return self.delete(request)
+        elif sub_cmd == 'delete_confirm':
+            return self.delete_confirm(request)
+        elif sub_cmd == 'user':
+            return self.show_user(request)
+        else:
+            match = self.user_range.match(sub_cmd) if sub_cmd else None
+            if match:
+                offset = int(match.group(1)) - 1
+                limit = int(match.group(2)) - offset
+            else:
+                offset = 0
+                limit = 10
+        return self.list_users(offset, limit)
+
+    def create(self, request):
+        return self.render_forms(request, [CreateUserForm(self.auth)],
+                                 success_msg='User created!')
+
+    def delete(self, request):
+        ids = [int(x[5:]) for x in request.params if request.params[x] == 'on']
+        users = self.auth.session.query(User.name, User.id) \
+            .filter(User.id.in_(ids)).all()
+        return render('auth/delete', users=users)
+
+    def delete_confirm(self, request):
+        ids = [int(x) for x in request.params['delete'].split(',')]
+        self.auth.session.query(User).filter(User.id.in_(ids)).delete('fetch')
+        self.auth.commit()
+        return self.redirect('/auth/users')
+
+    def list_users(self, offset, limit):
+        users = self.auth.session.query(User).order_by(User.name) \
+            .offset(offset).limit(limit)
+        num_users = self.auth.session.query(User).count()
+        shown = (min(offset + 1, num_users), min(offset + limit, num_users))
+        if offset > 0:
+            st = max(0, offset - limit)
+            ed = st + limit
+            prev = '/auth/users/%d-%d' % (st + 1, ed)
+        else:
+            prev = None
+        if num_users > shown[1]:
+            next = '/auth/users/%d-%d' % (offset + limit + 1, shown[1] + limit)
+        else:
+            next = None
+
+        return render(
+            'auth/list', script='auth', users=users, offset=offset,
+            limit=limit, num_users=num_users, shown='%d-%d' % shown, prev=prev,
+            next=next)
+
+    def show_user(self, request):
+        id = int(request.path_info_pop())
+        user = self.auth.get_user(id)
+        if 'unassign' in request.params:
+            del user.yubikeys[request.params['unassign']]
+            self.auth.commit()
+        msg = None
+        if 'password' in request.params:
+            msg = 'Password set!'
+        return self.render_forms(request,
+                                 [SetPasswordForm(user, self.auth),
+                                 AssignYubiKeyForm(user, self.auth)],
+                                 'auth/user', user=user,
+                                 success_msg=msg)
+
+
+app = YubiAuthApp()
