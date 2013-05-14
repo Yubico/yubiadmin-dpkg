@@ -31,6 +31,7 @@ yubiadmin/static/css/bootstrap.min.css
 yubiadmin/static/css/main.css
 yubiadmin/static/img/glyphicons-halflings-white.png
 yubiadmin/static/img/glyphicons-halflings.png
+yubiadmin/static/js/auth.js
 yubiadmin/static/js/main.js
 yubiadmin/static/js/vendor/bootstrap.js
 yubiadmin/static/js/vendor/bootstrap.min.js
@@ -42,6 +43,9 @@ yubiadmin/templates/content.html
 yubiadmin/templates/form.html
 yubiadmin/templates/index.html
 yubiadmin/templates/admin/general.html
+yubiadmin/templates/auth/delete.html
+yubiadmin/templates/auth/list.html
+yubiadmin/templates/auth/user.html
 yubiadmin/templates/val/synchronization.html
 yubiadmin/util/__init__.py
 yubiadmin/util/app.py
