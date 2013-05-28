@@ -1,5 +1,14 @@
 2013-05-28  Dain Nilsson <dain@yubico.com>
 
+	* NEWS, setup.py: Bumped version.
+
+2013-05-28  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/static/js/editor.js: Fix reset form button for Ace
+	editors.
+
+2013-05-28  Dain Nilsson <dain@yubico.com>
+
 	* NEWS: Updated NEWS for release.
 
 2013-05-28  Dain Nilsson <dain@yubico.com>
