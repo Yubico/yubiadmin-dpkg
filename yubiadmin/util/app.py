@@ -26,12 +26,14 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 import os
+import re
 from jinja2 import Environment, FileSystemLoader
 from webob import exc
 from webob.dec import wsgify
 
 __all__ = [
     'App',
+    'CollectionApp',
     'render',
     'populate_forms',
 ]
@@ -68,7 +70,7 @@ def render(tmpl, **kwargs):
 
 def populate_forms(forms, data):
     if not data:
-        for form in forms:
+        for form in filter(lambda x: hasattr(x, 'load'), forms):
             form.load()
     else:
         errors = False
@@ -76,7 +78,7 @@ def populate_forms(forms, data):
             form.process(data)
             errors = not form.validate() or errors
         if not errors:
-            for form in forms:
+            for form in filter(lambda x: hasattr(x, 'save'), forms):
                 form.save()
 
 
@@ -90,9 +92,9 @@ class App(object):
 
     def render_forms(self, request, forms, template='form',
                      success_msg='Settings updated!', **kwargs):
-        alert = None
+        alerts = []
         if not request.params:
-            for form in forms:
+            for form in filter(lambda x: hasattr(x, 'load'), forms):
                 form.load()
         else:
             errors = False
@@ -102,14 +104,87 @@ class App(object):
             if not errors:
                 try:
                     if success_msg:
-                        alert = {'type': 'success', 'title': success_msg}
-                    for form in forms:
+                        alerts = [{'type': 'success', 'title': success_msg}]
+                    for form in filter(lambda x: hasattr(x, 'save'), forms):
                         form.save()
                 except Exception as e:
-                    alert = {'type': 'error', 'title': 'Error:',
-                             'message': str(e)}
+                    alerts = [{'type': 'error', 'title': 'Error:',
+                               'message': str(e)}]
             else:
-                alert = {'type': 'error', 'title': 'Invalid data!'}
+                alerts = [{'type': 'error', 'title': 'Invalid data!'}]
 
         return render(template, target=request.path, fieldsets=forms,
-                      alert=alert, **kwargs)
+                      alerts=alerts, **kwargs)
+
+
+ITEM_RANGE = re.compile('(\d+)-(\d+)')
+
+
+class CollectionApp(App):
+    base_url = ''
+    caption = 'Items'
+    item_name = 'Items'
+    columns = []
+    template = 'table'
+    script = 'table'
+    selectable = True
+    max_limit = 100
+
+    def _size(self):
+        return len(self._get())
+
+    def _get(self, offset=0, limit=None):
+        return [{}]
+
+    def _select(self, ids):
+        return [x for x in self._get() if x['id'] in ids]
+
+    def _delete(self, ids):
+        raise Exception('Not implemented!')
+
+    def __call__(self, request):
+        sub_cmd = request.path_info_pop()
+        if sub_cmd and not sub_cmd.startswith('_') and hasattr(self, sub_cmd):
+            return getattr(self, sub_cmd)(request)
+        else:
+            match = ITEM_RANGE.match(sub_cmd) if sub_cmd else None
+            if match:
+                offset = int(match.group(1)) - 1
+                limit = int(match.group(2)) - offset
+                return self.list(offset, limit)
+            else:
+                return self.list()
+
+    def list(self, offset=0, limit=10):
+        limit = min(self.max_limit, limit)
+        items = self._get(offset, limit)
+        total = self._size()
+        shown = (min(offset + 1, total), min(offset + limit, total))
+        if offset > 0:
+            st = max(0, offset - limit)
+            ed = st + limit
+            prev = '%s/%d-%d' % (self.base_url, st + 1, ed)
+        else:
+            prev = None
+        if total > shown[1]:
+            next = '%s/%d-%d' % (self.base_url, offset + limit + 1, shown[1]
+                                 + limit)
+        else:
+            next = None
+
+        return render(
+            self.template, script=self.script, items=items, offset=offset,
+            limit=limit, total=total, shown='%d-%d' % shown, prev=prev,
+            next=next, base_url=self.base_url, caption=self.caption,
+            cols=self.columns, item_name=self.item_name,
+            selectable=self.selectable)
+
+    def delete(self, request):
+        ids = [x[5:] for x in request.params if request.params[x] == 'on']
+        items = self._select(ids)
+        return render('table_delete', ids=','.join(ids), items=items,
+                      item_name=self.item_name, base_url=self.base_url)
+
+    def delete_confirm(self, request):
+        self._delete(request.params['delete'].split(','))
+        return self.redirect(self.base_url)

@@ -93,7 +93,7 @@ class FileForm(ConfigForm):
     Form that displays the entire content of a file.
     """
     content = TextAreaField('File')
-    attrs = {'content': {'class': 'span9 code', 'rows': 25}}
+    attrs = {'content': {'class': 'span9 code editor', 'rows': 25}}
 
     class Handler(object):
         def read(self, content):
@@ -102,12 +102,15 @@ class FileForm(ConfigForm):
         def write(self, content, value):
             return value
 
-    def __init__(self, filename, legend=None, description=None, *args,
-                 **kwargs):
+    def __init__(self, filename, legend=None, description=None, lang=None,
+                 *args, **kwargs):
         self.config = FileConfig(filename, [('content', self.Handler())])
         self.legend = legend
         self.description = description
+        if lang:
+            self.attrs['content']['ace-mode'] = lang
         super(FileForm, self).__init__(*args, **kwargs)
+        self.content.label.text = 'File: %s' % filename
 
 
 class DBConfigForm(ConfigForm):

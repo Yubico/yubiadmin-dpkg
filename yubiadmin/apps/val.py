@@ -29,11 +29,11 @@ import re
 import os
 from wtforms.fields import IntegerField
 from wtforms.validators import NumberRange, IPAddress, URL
-from yubiadmin.util.app import App
+from yubiadmin.util.app import App, CollectionApp, render
 from yubiadmin.util.config import (RegexHandler, FileConfig, php_inserter,
                                    parse_block, strip_comments, strip_quotes)
 from yubiadmin.util.form import ConfigForm, FileForm, DBConfigForm, ListField
-from yubiadmin.util.system import invoke_rc_d
+from yubiadmin.util.system import invoke_rc_d, run
 
 __all__ = [
     'app'
@@ -210,14 +210,27 @@ class YubikeyVal(App):
     """
 
     name = 'val'
-    sections = ['general', 'database', 'synchronization', 'ksms', 'advanced']
-    disabled = not os.path.isfile(YKVAL_CONFIG_FILE)
+    sections = ['general', 'clients', 'database', 'synchronization', 'ksms',
+                'advanced']
+
+    @property
+    def disabled(self):
+        return not os.path.isfile(YKVAL_CONFIG_FILE)
+
+    def __init__(self):
+        self._clients = YubikeyValClients()
 
     def general(self, request):
         """
         General
         """
         return self.render_forms(request, [SyncLevelsForm(), MiscForm()])
+
+    def clients(self, request):
+        """
+        API Clients
+        """
+        return self._clients(request)
 
     def database(self, request):
         """
@@ -257,10 +270,54 @@ class YubikeyVal(App):
         Advanced
         """
         return self.render_forms(request, [
-            FileForm(YKVAL_CONFIG_FILE, 'Configuration')
-        ])
+            FileForm(YKVAL_CONFIG_FILE, 'Configuration', lang='php')
+        ], script='editor')
 
-    #Pulls the tab to the right:
+    # Pulls the tab to the right:
     advanced.advanced = True
+
+
+class YubikeyValClients(CollectionApp):
+    base_url = '/val/clients'
+    item_name = 'Clients'
+    caption = 'Client API Keys'
+    columns = ['Client ID', 'Enabled', 'API Key']
+    template = 'val/client_list'
+    selectable = False
+
+    def _size(self):
+        status, output = run('ykval-export-clients | wc -l')
+        return int(output) if status == 0 else 0
+
+    def _get(self, offset=0, limit=None):
+        cmd = 'ykval-export-clients'
+        if offset > 0:
+            cmd += '| tail -n+%d' % (offset + 1)
+        if limit:
+            cmd += '| head -n %d' % limit
+
+        status, output = run(cmd)
+        if status != 0:
+            return []
+
+        return [{
+            'id': parts[0],
+            'label': '%s - %s' % (parts[0], parts[3]),
+            'Client ID': parts[0],
+            'Enabled': parts[1] != '0',
+            'API Key': parts[3]
+        } for parts in [line.split(',') for line in output.splitlines()]]
+
+    def create(self, request):
+        status, output = run('ykval-gen-clients --urandom')
+        if status == 0:
+            parts = [x.strip() for x in output.split(',')]
+            return render('val/client_created', client_id=parts[0],
+                          api_key=parts[1])
+        resp = self.list()
+        resp.data['alerts'] = [
+            {'type': 'error', 'title': 'Error generating client:',
+                'message': 'Command exited with status: %d' % status}]
+        return resp
 
 app = YubikeyVal()
