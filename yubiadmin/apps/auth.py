@@ -32,6 +32,7 @@ from wtforms.fields import (SelectField, TextField, BooleanField, IntegerField,
 from wtforms.widgets import PasswordInput
 from wtforms.validators import NumberRange, URL, EqualTo, Regexp, Optional
 from yubiadmin.util.app import App, CollectionApp
+from yubiadmin.util.system import invoke_rc_d
 from yubiadmin.util.config import (python_handler, python_list_handler,
                                    FileConfig)
 from yubiadmin.util.form import ConfigForm, FileForm, ListField
@@ -71,6 +72,9 @@ auth_config = FileConfig(
         ('hsm_device', python_handler('YHSM_DEVICE', 'yhsm://localhost:5348')),
         ('db_config', python_handler('DATABASE_CONFIGURATION',
                                      'sqlite:///:memory:')),
+        ('user_registration', python_handler('ENABLE_USER_REGISTRATION',
+                                             True)),
+        ('user_deletion', python_handler('ALLOW_USER_DELETE', False)),
     ]
 )
 
@@ -99,7 +103,20 @@ class SecurityForm(ConfigForm):
         'Allow Empty Passwords',
         description="""
         Allow users with no password to log in without providing a password.
-        When set to False, a user with no password will be unable to log in.
+        When not checked, a user with no password will be unable to log in.
+        """
+    )
+    user_registration = BooleanField(
+        'Enable User Registration',
+        description="""
+        Allow users to register themselves using the YubiAuth client interface.
+        """
+    )
+    user_deletion = BooleanField(
+        'Enable User Deletion',
+        description="""
+        Allow users to delete their own account using the YubiAuth client
+        interface.
         """
     )
     security_level = SelectField(
@@ -178,6 +195,7 @@ class YubiAuthApp(App):
 
     name = 'auth'
     sections = ['general', 'database', 'validation', 'advanced']
+    priority = 40
 
     @property
     def disabled(self):
@@ -190,15 +208,14 @@ class YubiAuthApp(App):
         return ['general', 'database', 'validation', 'users', 'advanced']
 
     def general(self, request):
-        """
-        General
-        """
-        return self.render_forms(request, [SecurityForm(), HSMForm()])
+        return self.render_forms(request, [SecurityForm(), HSMForm()],
+                                 template='auth/general')
+
+    def reload(self, request):
+        invoke_rc_d('apache2', 'reload')
+        return self.redirect('/auth/general')
 
     def database(self, request):
-        """
-        Database
-        """
         return self.render_forms(request, [DatabaseForm()])
 
     def validation(self, request):
@@ -208,9 +225,6 @@ class YubiAuthApp(App):
         return self.render_forms(request, [ValidationServerForm()])
 
     def advanced(self, request):
-        """
-        Advanced
-        """
         return self.render_forms(request, [
             FileForm(AUTH_CONFIG_FILE, 'Configuration', lang='python')
         ], script='editor')
@@ -326,9 +340,10 @@ class YubiAuthUsers(CollectionApp):
             'YubiKeys': ', '.join(user.yubikeys.keys())
         }, users)
 
-    def _select(self, ids):
-        return self.auth.session.query(self.User.name, self.User.id) \
+    def _labels(self, ids):
+        users = self.auth.session.query(self.User.name) \
             .filter(self.User.id.in_(map(int, ids))).all()
+        return map(lambda x: x[0], users)
 
     def _delete(self, ids):
         self.auth.session.query(self.User) \

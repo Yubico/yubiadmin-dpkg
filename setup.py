@@ -32,7 +32,7 @@ from release import release
 
 setup(
     name='yubiadmin',
-    version='0.1.2',
+    version='0.1.3',
     author='Dain Nilsson',
     author_email='dain@yubico.com',
     maintainer='Yubico Open Source Maintainers',
@@ -51,7 +51,7 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',

@@ -1,3 +1,58 @@
+2013-06-05  Dain Nilsson <dain@yubico.com>
+
+	* NEWS: Updated NEWS for release.
+
+2013-06-05  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/auth.py, yubiadmin/templates/auth/general.html: 
+	Added reload web server button to auth.
+
+2013-06-04  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/auth.py: Added user delete setting to YubiAuth.
+
+2013-06-04  Dain Nilsson <dain@yubico.com>
+
+	* setup.py: Moved to beta.
+
+2013-06-03  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/auth.py, yubiadmin/apps/sys.py,
+	yubiadmin/templates/sys/general.html: Better upgrading in sys app.
+
+2013-06-03  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/auth.py, yubiadmin/apps/freerad.py,
+	yubiadmin/apps/sys.py, yubiadmin/server.py,
+	yubiadmin/templates/content.html,
+	yubiadmin/templates/sys/general.html: Added sys app.
+
+2013-05-31  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/__init__.py, yubiadmin/server.py: Fix ordering when
+	missing app.name
+
+2013-05-31  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/ksm.py, yubiadmin/apps/val.py, yubiadmin/server.py: 
+	Use filename base as app name when missing.
+
+2013-05-31  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/admin.py, yubiadmin/apps/auth.py,
+	yubiadmin/apps/freerad.py, yubiadmin/apps/val.py,
+	yubiadmin/server.py: Added fallbacks for title and description if
+	docstring is missing.
+
+2013-05-30  Dain Nilsson <dain@yubico.com>
+
+	* NEWS, setup.py: Bumped versions.
+
+2013-05-30  Dain Nilsson <dain@yubico.com>
+
+	* yubiadmin/apps/auth.py, yubiadmin/templates/table_delete.html,
+	yubiadmin/util/app.py: Fix displaying users to delete.
+
 2013-05-28  Dain Nilsson <dain@yubico.com>
 
 	* NEWS, setup.py: Bumped version.

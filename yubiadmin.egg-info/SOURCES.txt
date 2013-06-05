@@ -25,6 +25,7 @@ yubiadmin/apps/admin.py
 yubiadmin/apps/auth.py
 yubiadmin/apps/freerad.py
 yubiadmin/apps/ksm.py
+yubiadmin/apps/sys.py
 yubiadmin/apps/val.py
 yubiadmin/static/favicon.ico
 yubiadmin/static/css/bootstrap-responsive.css
@@ -56,10 +57,12 @@ yubiadmin/templates/index.html
 yubiadmin/templates/table.html
 yubiadmin/templates/table_delete.html
 yubiadmin/templates/admin/general.html
+yubiadmin/templates/auth/general.html
 yubiadmin/templates/auth/list.html
 yubiadmin/templates/auth/user.html
 yubiadmin/templates/freerad/client_list.html
 yubiadmin/templates/freerad/general.html
+yubiadmin/templates/sys/general.html
 yubiadmin/templates/val/client_created.html
 yubiadmin/templates/val/client_list.html
 yubiadmin/templates/val/synchronization.html

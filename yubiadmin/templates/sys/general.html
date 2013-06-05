@@ -1,0 +1,18 @@
+<legend>System</legend>
+{% if updates %}
+<p>There are system updates available:<br/>
+<ul>
+	{% for update in updates %}
+	<li>{{ update }}</li>
+	{% endfor %}
+</ul>
+<a href="dist_upgrade" class="btn">Update System</a>
+</p>
+{% else %}
+<p>Your system is up to date.</p>
+<a href="update" class="btn" data-loading-text="Checking for updates..." onclick="$(this).button('loading');">Check for updates</a>
+{% endif %}
+
+<legend>Restart</legend>
+<p>Restarting the system may take several minutes, during which this web interface will be unavailable.</p>
+<a href="reboot" class="btn btn-danger" data-loading-text="Restarting..." onclick="$(this).button('loading');$.get('reboot?now');return false;">Restart System</a>
