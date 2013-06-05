@@ -1,5 +1,9 @@
 2013-06-05  Dain Nilsson <dain@yubico.com>
 
+	* NEWS, setup.py, yubiadmin/server.py: Fixed broken server.
+
+2013-06-05  Dain Nilsson <dain@yubico.com>
+
 	* NEWS: Updated NEWS for release.
 
 2013-06-05  Dain Nilsson <dain@yubico.com>
